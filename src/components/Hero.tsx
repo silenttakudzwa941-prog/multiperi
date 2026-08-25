@@ -4,15 +4,19 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center text-center">
       
-      {/* 1. Video Background */}
+      {/* 1. Video Background - FIXED FOR MOBILE */}
       <video 
         autoPlay 
         muted 
         loop 
         playsInline
+        preload="auto" // <-- ADDED
+        controls={false} // <-- ADDED
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
+        {/* Fallback image if video fails */}
+        Your browser does not support video
       </video>
 
       {/* 2. Dark overlay so text pops */}
@@ -24,6 +28,7 @@ export default function Hero() {
         alt="" 
         width={500}
         height={500}
+        priority // <-- ADDED: makes logo load faster
         className="absolute inset-0 m-auto opacity-10 pointer-events-none" 
       />
 
@@ -35,9 +40,9 @@ export default function Hero() {
         
         {/* THE SCRIPT */}
         <p className="text-xl md:text-2xl mt-4 font-light text-zinc-200">
-          Helping Brands <span className="red-accent font-bold">Say Less</span>, 
-          <span className="red-accent font-bold"> Mean More</span> & 
-          <span className="red-accent font-bold"> Sell Smart</span>
+          Helping Brands <span className="text-red-500 font-bold">Say Less</span>, 
+          <span className="text-red-500 font-bold"> Mean More</span> & 
+          <span className="text-red-500 font-bold"> Sell Smart</span>
         </p>
         
         <p className="mt-6 text-zinc-400 max-w-2xl mx-auto">
@@ -46,7 +51,7 @@ export default function Hero() {
         </p>
 
         {/* CTA Buttons */}
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-10 flex-col sm:flex-row gap-4 justify-center">
           <a href="#portfolio" className="btn-outline">
             View Our Work
           </a>
