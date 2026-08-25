@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Menu, X } from "lucide-react"; // or use react-icons if you prefer
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,75 +15,82 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-zinc-900">
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-20">
-        
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <Image 
-            src="/logo.jpeg" 
-            alt="Multiperi Logo" 
-            width={40} 
-            height={40} 
-            className="rounded-full"
-          />
-          <span className="text-xl font-black tracking-wide">
-            MULTIPERI
-          </span>
-        </Link>
+    <>
+      <header className="fixed top-0 left-0 w-full z-[1000] bg-black/80 backdrop-blur-md border-b border-zinc-900">
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-20">
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name}
-              href={link.href}
-              className="text-zinc-300 hover:text-red-500 font-medium transition"
-            >
-              {link.name}
-            </Link>
-          ))}
-
-          {/* CTA Button */}
-          <Link 
-            href="#tickets"
-            className="ml-4 px-5 py-2.5 bg-red-600 hover:bg-red-700 hover:scale-105 font-bold rounded-lg transition"
-          >
-            Purchase Ticket
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/logo.jpeg"
+              alt="Multiperi Logo"
+              width={40}
+              height={40}
+              className="rounded-full"
+              priority
+            />
+            <span className="text-xl font-black tracking-wide">
+              MULTIPERI
+            </span>
           </Link>
-        </nav>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-zinc-300 hover:text-red-500 font-medium transition"
+              >
+                {link.name}
+              </Link>
+            ))}
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-black/95 border-t border-zinc-900 px-6 py-6 space-y-4">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="block text-lg text-zinc-300 hover:text-red-500 font-medium"
+            {/* CTA Button */}
+            <Link
+              href="#tickets"
+              className="ml-4 px-5 py-2.5 bg-red-600 hover:bg-red-700 hover:scale-105 font-bold rounded-lg transition"
             >
-              {link.name}
+              Purchase Ticket
             </Link>
-          ))}
-          <Link 
-            href="#tickets"
-            onClick={() => setIsOpen(false)}
-            className="block text-center w-full px-5 py-3 bg-red-600 hover:bg-red-700 font-bold rounded-lg transition"
+          </nav>
+
+          {/* Mobile Menu Button - FIXED FOR IOS */}
+          <button
+            type="button" // <-- ADDED
+            className="md:hidden z-[1001] cursor-pointer p-2" // <-- ADDED cursor + padding
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle Menu"
           >
-            Purchase Ticket
-          </Link>
+            {isOpen? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
-      )}
-    </header>
+      </header>
+
+      {/* Mobile Menu - MOVED OUT + FIXED - THIS IS THE MAIN FIX */}
+      <div
+        className={`md:hidden fixed top-20 left-0 w-full h-[calc(100vh-5rem)] bg-black/95 backdrop-blur-md border-t border-zinc-900 px-6 py-6 space-y-4 z-[999] transition-transform duration-300 ${
+          isOpen? 'translate-x-0' : '-translate-x-full' // <-- ADDED slide animation
+        }`}
+      >
+        {navLinks.map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            onClick={() => setIsOpen(false)}
+            className="block text-lg text-zinc-300 hover:text-red-500 font-medium py-2"
+          >
+            {link.name}
+          </Link>
+        ))}
+        <Link
+          href="#tickets"
+          onClick={() => setIsOpen(false)}
+          className="block text-center w-full px-5 py-3 bg-red-600 hover:bg-red-700 font-bold rounded-lg transition"
+        >
+          Purchase Ticket
+        </Link>
+      </div>
+    </>
   )
 }
